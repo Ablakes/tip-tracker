@@ -1,7 +1,12 @@
-import useTips from "../hooks/useTips";
+import { useState } from "react";
+import EditTipForm from "../components/EditTipForm";
+import Modal from "../components/Modal";
+import useTips from "../hooks/useTips"; // or your custom logic
 
 export default function TipHistory() {
-  const { tips, removeTip } = useTips();
+  const { tips, updateTip, removeTip } = useTips();
+
+  const [editIndex, setEditIndex] = useState(null);
 
   return (
     <div>
@@ -27,21 +32,27 @@ export default function TipHistory() {
                 <td className="border p-2">{tip.hours}</td>
                 <td className="border p-2">${tip.cash.toFixed(2)}</td>
                 <td className="border p-2">${tip.credit.toFixed(2)}</td>
-                <td className="border p-2">
-                  ${(tip.cash + tip.credit).toFixed(2)}
-                </td>
-                <td className="border p-2">
-                  <button
-                    onClick={() => removeTip(i)}
-                    className="text-red-600 hover:underline"
-                  >
-                    Delete
-                  </button>
+                <td className="border p-2">${(tip.cash + tip.credit).toFixed(2)}</td>
+                <td className="border p-2 space-x-2">
+                  <button onClick={() => setEditIndex(i)} className="text-blue-600 hover:underline">Edit</button>
+                  <button onClick={() => removeTip(i)} className="text-red-600 hover:underline">Delete</button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+      )}
+
+      {editIndex !== null && (
+        <Modal onClose={() => setEditIndex(null)}>
+          <EditTipForm
+            tip={tips[editIndex]}
+            onSave={(updatedTip) => {
+              updateTip(editIndex, updatedTip);
+              setEditIndex(null);
+            }}
+          />
+        </Modal>
       )}
     </div>
   );
