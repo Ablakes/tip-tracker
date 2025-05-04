@@ -1,6 +1,13 @@
-import React from "react";
+import NewTipForm from "../components/NewTipForm";
+import useTips from "../hooks/useTips";
 
 export default function Dashboard() {
-    return <div className="p-6 text-2xl font-bold">Main Dashboard</div>;
-  }
-  
+  const { tips, addTip } = useTips();
+
+  return (
+    <div className="space-y-6">
+      <h1 className="text-3xl font-bold">Dashboard</h1>
+      <NewTipForm onSave={addTip} />
+    </div>
+  );
+}
