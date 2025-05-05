@@ -6,7 +6,6 @@ export default function EditTipForm({ tip, onSave }) {
   const [cash, setCash] = useState(tip.cash);
   const [credit, setCredit] = useState(tip.credit);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
   const today = new Date();
   const todayString = today.toLocaleDateString("en-CA"); // YYYY-MM-DD
@@ -41,9 +40,6 @@ export default function EditTipForm({ tip, onSave }) {
     });
 
     setError("");
-    setSuccess("Tip updated successfully!");
-
-    setTimeout(() => setSuccess(""), 3000);
   };
 
   return (
@@ -51,7 +47,6 @@ export default function EditTipForm({ tip, onSave }) {
       <h2 className="text-xl font-semibold">Edit Tip</h2>
 
       {error && <div className="text-red-600 font-semibold">{error}</div>}
-      {success && <div className="text-green-600 font-semibold">{success}</div>}
 
       <div>
         <label className="block text-sm font-medium">Date</label>

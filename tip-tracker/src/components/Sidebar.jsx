@@ -6,7 +6,7 @@ export default function Sidebar() {
       <h1 className="text-2xl font-bold mb-8">Tip Tracker</h1>
       <nav className="flex flex-col gap-4">
         <Link to="/">🏠 Home</Link>
-        <Link to="/history">📋 Tip History</Link>
+        <Link to="/history">📋 Shift History</Link>
         <Link to="/reports">📊 Reports</Link>
       </nav>
     </div>

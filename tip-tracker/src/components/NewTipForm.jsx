@@ -57,7 +57,7 @@ export default function NewTipForm({ onSave }) {
 
   return (
     <form onSubmit={handleSubmit} className="bg-white shadow p-6 rounded-xl space-y-4">
-      <h2 className="text-xl font-semibold">Enter New Tip</h2>
+      <h2 className="text-xl font-semibold">Enter New Shift</h2>
 
       {error && <div className="text-red-600 font-semibold">{error}</div>}
       {success && <div className="text-green-600 font-semibold">{success}</div>}
