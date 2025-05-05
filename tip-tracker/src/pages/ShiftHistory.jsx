@@ -9,9 +9,15 @@ export default function ShiftHistory() {
 
   const [editIndex, setEditIndex] = useState(null);
   const [showNewTip, setShowNewTip] = useState(false);
-  const [success, setSuccess] = useState("");
   const [confirmDeleteIndex, setConfirmDeleteIndex] = useState(null);
+  const [success, setSuccess] = useState("");
 
+  const sortedTips = [...tips].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  const getWeekday = (dateStr) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString("en-US", { weekday: "short" }); // e.g., Mon, Tue
+  };
 
   return (
     <div>
@@ -26,13 +32,14 @@ export default function ShiftHistory() {
         + Enter New Shift
       </button>
 
-      {tips.length === 0 ? (
+      {sortedTips.length === 0 ? (
         <p>No shifts yet.</p>
       ) : (
         <table className="w-full border-collapse">
           <thead>
             <tr className="bg-gray-200">
               <th className="border p-2">Date</th>
+              <th className="border p-2">Day</th>
               <th className="border p-2">Hours</th>
               <th className="border p-2">Cash</th>
               <th className="border p-2">Credit</th>
@@ -41,9 +48,10 @@ export default function ShiftHistory() {
             </tr>
           </thead>
           <tbody>
-            {tips.map((tip, i) => (
+            {sortedTips.map((tip, i) => (
               <tr key={i} className="text-center bg-white border-t">
                 <td className="border p-2">{tip.date}</td>
+                <td className="border p-2">{getWeekday(tip.date)}</td>
                 <td className="border p-2">{tip.hours}</td>
                 <td className="border p-2">${tip.cash.toFixed(2)}</td>
                 <td className="border p-2">${tip.credit.toFixed(2)}</td>
@@ -126,8 +134,6 @@ export default function ShiftHistory() {
           </div>
         </Modal>
       )}
-
-
     </div>
   );
 }
