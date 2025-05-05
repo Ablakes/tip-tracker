@@ -10,6 +10,8 @@ export default function ShiftHistory() {
   const [editIndex, setEditIndex] = useState(null);
   const [showNewTip, setShowNewTip] = useState(false);
   const [success, setSuccess] = useState("");
+  const [confirmDeleteIndex, setConfirmDeleteIndex] = useState(null);
+
 
   return (
     <div>
@@ -48,22 +50,20 @@ export default function ShiftHistory() {
                 <td className="border p-2">
                   ${(tip.cash + tip.credit).toFixed(2)}
                 </td>
-                <td className="border p-2 space-x-2">
+                <td className="border p-2 flex justify-center gap-3 text-xl">
                   <button
                     onClick={() => setEditIndex(i)}
-                    className="text-blue-600 hover:underline"
+                    className="text-blue-600 hover:scale-110 transition-transform"
+                    title="Edit"
                   >
-                    Edit
+                    ✏️
                   </button>
                   <button
-                    onClick={() => {
-                      removeTip(i);
-                      setSuccess("Shift deleted successfully!");
-                      setTimeout(() => setSuccess(""), 3000);
-                    }}
-                    className="text-red-600 hover:underline"
+                    onClick={() => setConfirmDeleteIndex(i)}
+                    className="text-red-600 hover:scale-110 transition-transform"
+                    title="Delete"
                   >
-                    Delete
+                    🗑️
                   </button>
                 </td>
               </tr>
@@ -98,6 +98,36 @@ export default function ShiftHistory() {
           />
         </Modal>
       )}
+
+      {confirmDeleteIndex !== null && (
+        <Modal onClose={() => setConfirmDeleteIndex(null)}>
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold">Confirm Delete</h2>
+            <p>Are you sure you want to delete this shift?</p>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setConfirmDeleteIndex(null)}
+                className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  removeTip(confirmDeleteIndex);
+                  setConfirmDeleteIndex(null);
+                  setSuccess("Shift deleted successfully!");
+                  setTimeout(() => setSuccess(""), 3000);
+                }}
+                className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </Modal>
+      )}
+
+
     </div>
   );
 }
