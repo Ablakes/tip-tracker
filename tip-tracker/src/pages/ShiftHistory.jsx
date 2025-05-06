@@ -3,6 +3,7 @@ import useTips from "../hooks/useTips";
 import Modal from "../components/Modal";
 import EditTipForm from "../components/EditTipForm";
 import NewTipForm from "../components/NewTipForm";
+import FilterModal from "../components/FilterModal";
 
 export default function ShiftHistory() {
   const { tips, addTip, updateTip, removeTip } = useTips();
@@ -11,12 +12,26 @@ export default function ShiftHistory() {
   const [showNewTip, setShowNewTip] = useState(false);
   const [confirmDeleteIndex, setConfirmDeleteIndex] = useState(null);
   const [success, setSuccess] = useState("");
+  const [showFilter, setShowFilter] = useState(false);
+  const [sortOrder, setSortOrder] = useState("newest");
+  const [filterStartDate, setFilterStartDate] = useState("");
+  const [filterEndDate, setFilterEndDate] = useState("");
 
-  const sortedTips = [...tips].sort((a, b) => new Date(b.date) - new Date(a.date));
+  const filteredTips = tips
+    .filter((tip) => {
+      if (!filterStartDate || !filterEndDate) return true;
+      const date = new Date(tip.date);
+      return date >= new Date(filterStartDate) && date <= new Date(filterEndDate);
+    })
+    .sort((a, b) => {
+      const aDate = new Date(a.date);
+      const bDate = new Date(b.date);
+      return sortOrder === "newest" ? bDate - aDate : aDate - bDate;
+    });
 
   const getWeekday = (dateStr) => {
     const date = new Date(dateStr);
-    return date.toLocaleDateString("en-US", { weekday: "short" }); // e.g., Mon, Tue
+    return date.toLocaleDateString("en-US", { weekday: "short" });
   };
 
   return (
@@ -25,15 +40,35 @@ export default function ShiftHistory() {
 
       {success && <div className="mb-4 text-green-600 font-semibold">{success}</div>}
 
-      <button
-        onClick={() => setShowNewTip(true)}
-        className="mb-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-      >
-        + Enter New Shift
-      </button>
+      <div className="flex flex-wrap gap-4 mb-4">
+        <button
+          onClick={() => setShowNewTip(true)}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          + Enter New Shift
+        </button>
+        <button
+          onClick={() => setShowFilter(true)}
+          className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+        >
+          Filter Tip History
+        </button>
+        {(filterStartDate || filterEndDate || sortOrder !== "newest") && (
+          <button
+            onClick={() => {
+              setSortOrder("newest");
+              setFilterStartDate("");
+              setFilterEndDate("");
+            }}
+            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+          >
+            Clear Filter
+          </button>
+        )}
+      </div>
 
-      {sortedTips.length === 0 ? (
-        <p>No shifts yet.</p>
+      {filteredTips.length === 0 ? (
+        <p>No shifts match your filter.</p>
       ) : (
         <table className="w-full border-collapse">
           <thead>
@@ -48,7 +83,7 @@ export default function ShiftHistory() {
             </tr>
           </thead>
           <tbody>
-            {sortedTips.map((tip, i) => (
+            {filteredTips.map((tip, i) => (
               <tr key={i} className="text-center bg-white border-t">
                 <td className="border p-2">{tip.date}</td>
                 <td className="border p-2">{getWeekday(tip.date)}</td>
@@ -132,6 +167,22 @@ export default function ShiftHistory() {
               </button>
             </div>
           </div>
+        </Modal>
+      )}
+
+      {showFilter && (
+        <Modal onClose={() => setShowFilter(false)}>
+          <FilterModal
+            currentOrder={sortOrder}
+            currentStart={filterStartDate}
+            currentEnd={filterEndDate}
+            onApply={(order, start, end) => {
+              setSortOrder(order);
+              setFilterStartDate(start);
+              setFilterEndDate(end);
+              setShowFilter(false);
+            }}
+          />
         </Modal>
       )}
     </div>
