@@ -16,6 +16,7 @@ export default function ShiftHistory() {
   const [sortOrder, setSortOrder] = useState("newest");
   const [filterStartDate, setFilterStartDate] = useState("");
   const [filterEndDate, setFilterEndDate] = useState("");
+  const [showInfo, setShowInfo] = useState(false);
 
   const filteredTips = tips
     .filter((tip) => {
@@ -36,7 +37,17 @@ export default function ShiftHistory() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-4">Shift History</h1>
+      <div className="flex items-center gap-2 mb-4">
+        <h1 className="text-3xl font-bold">Shift History</h1>
+        <button
+          onClick={() => setShowInfo(true)}
+          title="What is this?"
+          className="text-blue-600 text-2xl hover:text-blue-800"
+        >
+          ℹ️
+        </button>
+      </div>
+
 
       {success && <div className="mb-4 text-green-600 font-semibold">{success}</div>}
 
@@ -183,6 +194,27 @@ export default function ShiftHistory() {
               setShowFilter(false);
             }}
           />
+        </Modal>
+      )}
+
+      {showInfo && (
+        <Modal onClose={() => setShowInfo(false)}>
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold">How Tip History Works</h2>
+            <p>
+              Your shifts are displayed from newest to oldest by default. If you'd like
+              to change the order or view a specific date range, click the
+              <strong> "Filter Tip History"</strong> button.
+            </p>
+            <div className="flex justify-end">
+              <button
+                onClick={() => setShowInfo(false)}
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              >
+                Got it
+              </button>
+            </div>
+          </div>
         </Modal>
       )}
     </div>
