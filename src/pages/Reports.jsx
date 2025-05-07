@@ -9,7 +9,7 @@ export default function Reports() {
 
   const handleGenerate = (e) => {
     e.preventDefault();
-    // You’ll handle report generation later here
+    // Report generation will go here
     console.log("Generating report:", { startDate, endDate, hourlyWage });
   };
 

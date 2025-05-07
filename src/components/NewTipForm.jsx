@@ -51,7 +51,7 @@ export default function NewTipForm({ onSave }) {
     setError("");
     setSuccess("Tip saved successfully!");
 
-    // Clear success after 3 seconds
+    // Clear success message after 3 seconds
     setTimeout(() => setSuccess(""), 3000);
   };
 
