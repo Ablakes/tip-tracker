@@ -6,17 +6,17 @@ Getting Started
 
 1. Clone the Repo
 
-git clone https://github.com/Ablakes/tip-tracker
-cd your-repo-name
+    git clone https://github.com/Ablakes/tip-tracker
+    cd your-repo-name
 
 2. Make sure Node is installed and run:
 
-npm install
+    npm install
 
 3. Start the app with:
 
-npm start
+    npm start
 
-Then visit:
+4. Then visit:
 
-http://localhost:3000/
+    http://localhost:3000/
