@@ -7,9 +7,8 @@ Getting Started
 1. Clone the Repo
 
     git clone https://github.com/Ablakes/tip-tracker
-    cd your-repo-name
 
-2. Make sure Node is installed and run:
+2. Make sure Node is installed and in the root directory run:
 
     npm install
 
