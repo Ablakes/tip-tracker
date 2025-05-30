@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Modal from "../components/Modal";
+import useTips from "../hooks/useTips";
 
 export default function Reports() {
   const [startDate, setStartDate] = useState("");
@@ -7,10 +8,32 @@ export default function Reports() {
   const [hourlyWage, setHourlyWage] = useState("");
   const [showInfo, setShowInfo] = useState(false);
 
-  const handleGenerate = (e) => {
+  const { tips } = useTips(); // pulls shift history from localStorage
+
+  const handleGenerate = async (e) => {
     e.preventDefault();
-    // Report generation will go here
-    console.log("Generating report:", { startDate, endDate, hourlyWage });
+
+    const payload = {
+      shifts: tips,
+      startDate,
+      endDate,
+      hourlyWage: parseFloat(hourlyWage),
+    };
+
+    try {
+      const response = await fetch("http://localhost:5000/generate-report", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+      console.log("Report result:", result);
+
+      // TODO: Use result to display report data (e.g., chart, cards, etc.)
+    } catch (error) {
+      console.error("Error generating report:", error);
+    }
   };
 
   return (
