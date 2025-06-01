@@ -1,0 +1,31 @@
+{
+  "shifts": [
+    {
+      "date": "2025-05-30",
+      "hours": 1,
+      "cash": 1,
+      "credit": 1
+    },
+    {
+      "date": "2025-05-29",
+      "hours": 2,
+      "cash": 2,
+      "credit": 2
+    },
+    {
+      "date": "2025-05-19",
+      "hours": 5,
+      "cash": 5,
+      "credit": 5
+    },
+    {
+      "date": "2025-06-01",
+      "hours": 3,
+      "cash": 25,
+      "credit": 35
+    }
+  ],
+  "startDate": "2025-05-01",
+  "endDate": "2025-06-01",
+  "hourlyWage": 15
+}

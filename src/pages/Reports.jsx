@@ -7,6 +7,7 @@ export default function Reports() {
   const [endDate, setEndDate] = useState("");
   const [hourlyWage, setHourlyWage] = useState("");
   const [showInfo, setShowInfo] = useState(false);
+  const [reportData, setReportData] = useState(null);
 
   const { tips } = useTips(); // pulls shift history from localStorage
 
@@ -21,16 +22,20 @@ export default function Reports() {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/generate-report", {
+      const response = await fetch("http://localhost:4000/api/report", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
       const result = await response.json();
-      console.log("Report result:", result);
+      setReportData(result);
 
-      // TODO: Use result to display report data (e.g., chart, cards, etc.)
+      if (result.error) {
+        console.error("Microservice error:", result.error);
+      } else {
+        console.log("Report result:", result);
+      }
     } catch (error) {
       console.error("Error generating report:", error);
     }
@@ -91,6 +96,28 @@ export default function Reports() {
           Generate Report
         </button>
       </form>
+
+      {reportData && !reportData.error && (
+        <div className="mt-6 p-4 border rounded bg-white shadow">
+          <h2 className="text-xl font-bold mb-2">Report Summary</h2>
+          <ul className="space-y-1 text-left">
+            <li><strong>Hours worked:</strong> {reportData.total_hours_worked}</li>
+            <li><strong>Cash tips:</strong> ${reportData.cash_tips}</li>
+            <li><strong>Credit tips:</strong> ${reportData.credit_tips}</li>
+            <li><strong>Total tips:</strong> ${reportData.total_tips}</li>
+            <li><strong>Total wages:</strong> ${reportData.total_wages}</li>
+            <li><strong>Gross earnings:</strong> ${reportData.gross_earnings}</li>
+            <li><strong>Start date:</strong> {reportData.start_date}</li>
+            <li><strong>End date:</strong> {reportData.end_date}</li>
+          </ul>
+        </div>
+      )}
+
+      {reportData?.error && (
+        <div className="mt-6 text-red-600 font-semibold">
+          ⚠️ {reportData.error}
+        </div>
+      )}
 
       {showInfo && (
         <Modal onClose={() => setShowInfo(false)}>
