@@ -9,7 +9,7 @@ export default function Reports() {
   const [showInfo, setShowInfo] = useState(false);
   const [reportData, setReportData] = useState(null);
 
-  const { tips } = useTips(); // pulls shift history from localStorage
+  const { tips } = useTips();
 
   const handleGenerate = async (e) => {
     e.preventDefault();
@@ -43,16 +43,16 @@ export default function Reports() {
 
   return (
     <div className="max-w-2xl mx-auto p-6">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center gap-2 mb-6">
         <h1 className="text-3xl font-bold">Reports</h1>
         <button
           onClick={() => setShowInfo(true)}
           title="What is this page?"
-          className="text-blue-600 text-2xl hover:text-blue-800"
+          className="text-blue-600 text-xl hover:text-blue-800"
         >
           ℹ️
         </button>
-      </div>
+      </div>  
 
       <form onSubmit={handleGenerate} className="space-y-4">
         <div>
@@ -107,6 +107,8 @@ export default function Reports() {
             <li><strong>Total tips:</strong> ${reportData.total_tips}</li>
             <li><strong>Total wages:</strong> ${reportData.total_wages}</li>
             <li><strong>Gross earnings:</strong> ${reportData.gross_earnings}</li>
+            <li><strong>Average hourly income:</strong> ${reportData.average_hourly_income}</li>
+            <li><strong>Projected annual income:</strong> ${reportData.projected_annual_income}</li>
             <li><strong>Start date:</strong> {reportData.start_date}</li>
             <li><strong>End date:</strong> {reportData.end_date}</li>
           </ul>
