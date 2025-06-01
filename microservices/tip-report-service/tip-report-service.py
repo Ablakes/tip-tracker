@@ -5,7 +5,7 @@ import os
 
 def calculate_income():
     try:
-        with open("../shifts.json", "r") as file:
+        with open("../../shifts.json", "r") as file:
             shift_data = json.load(file)
 
     except FileNotFoundError:
