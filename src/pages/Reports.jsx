@@ -1,6 +1,15 @@
 import { useState } from "react";
 import Modal from "../components/Modal";
 import useTips from "../hooks/useTips";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 export default function Reports() {
   const [startDate, setStartDate] = useState("");
@@ -10,6 +19,13 @@ export default function Reports() {
   const [reportData, setReportData] = useState(null);
 
   const { tips } = useTips();
+
+  const weekdayChartData = reportData?.weekday_hourly_income
+    ? Object.entries(reportData.weekday_hourly_income).map(([day, income]) => ({
+        day,
+        income,
+      }))
+    : [];
 
   const handleGenerate = async (e) => {
     e.preventDefault();
@@ -52,7 +68,7 @@ export default function Reports() {
         >
           ℹ️
         </button>
-      </div>  
+      </div>
 
       <form onSubmit={handleGenerate} className="space-y-4">
         <div>
@@ -98,7 +114,7 @@ export default function Reports() {
       </form>
 
       {reportData && !reportData.error && (
-        <div className="mt-6 p-4 border rounded bg-white shadow">
+        <div className="mt-6 p-4 border rounded bg-white shadow space-y-4">
           <h2 className="text-xl font-bold mb-2">Report Summary</h2>
           <ul className="space-y-1 text-left">
             <li><strong>Hours worked:</strong> {reportData.total_hours_worked}</li>
@@ -112,6 +128,21 @@ export default function Reports() {
             <li><strong>Start date:</strong> {reportData.start_date}</li>
             <li><strong>End date:</strong> {reportData.end_date}</li>
           </ul>
+
+          {weekdayChartData.length > 0 && (
+            <div className="pt-6">
+              <h2 className="text-lg font-semibold mb-2">Average Hourly Income by Weekday</h2>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={weekdayChartData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="day" />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="income" fill="#3182CE" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          )}
         </div>
       )}
 
@@ -128,7 +159,7 @@ export default function Reports() {
             <p>
               This page allows you to generate reports based on your shift history.
               You can select a date range and enter your hourly wage to see
-              earnings, tip breakdowns, and averages for that time period.
+              earnings, tip breakdowns, averages, and projected annual income.
             </p>
             <div className="flex justify-end">
               <button

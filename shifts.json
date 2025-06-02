@@ -23,6 +23,24 @@
       "hours": 3,
       "cash": 25,
       "credit": 35
+    },
+    {
+      "date": "2025-05-27",
+      "hours": 5,
+      "cash": 20,
+      "credit": 170
+    },
+    {
+      "date": "2025-05-21",
+      "hours": 5,
+      "cash": 15,
+      "credit": 150
+    },
+    {
+      "date": "2025-05-10",
+      "hours": 6,
+      "cash": 35,
+      "credit": 222
     }
   ],
   "startDate": "2025-05-01",
